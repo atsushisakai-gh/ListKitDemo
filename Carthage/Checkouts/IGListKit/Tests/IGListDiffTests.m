@@ -270,7 +270,7 @@ static NSArray *sorted(NSArray *arr) {
 }
 
 - (void)test_whenInsertingObject_withOldArrayHavingMultiples_thatChangeCountMatches {
-    NSArray *o = @[[NSObject new], [NSObject new], [NSObject new], @49, @33, @"cat", @"cat", @0, @14];
+    NSArray *o = @[@(NSNotFound), @(NSNotFound), @(NSNotFound), @49, @33, @"cat", @"cat", @0, @14];
     NSMutableArray *n = [o mutableCopy];
     [n insertObject:@"cat" atIndex:5]; // 3 cats in a row
     IGListIndexSetResult *result = IGListDiff(o, n, IGListDiffEquality);
@@ -278,7 +278,7 @@ static NSArray *sorted(NSArray *arr) {
 }
 
 - (void)test_whenMovingDuplicateObjects_thatChangeCountMatches {
-    NSArray *o = @[@1, @20, @14, [NSObject new], @"cat", [NSObject new], @4, @"dog", @"cat", @"cat", @"fish", [NSObject new], @"fish", [NSObject new]];
+    NSArray *o = @[@1, @20, @14, @(NSNotFound), @"cat", @(NSNotFound), @4, @"dog", @"cat", @"cat", @"fish", @(NSNotFound), @"fish", @(NSNotFound)];
     NSArray *n = @[@1, @28, @14, @"cat", @"cat", @4, @"dog", o[3], @"cat", @"fish", o[11], @"fish", o[13]];
     IGListIndexSetResult *result = IGListDiff(o, n, IGListDiffEquality);
     XCTAssertEqual(o.count + result.inserts.count - result.deletes.count, n.count);
@@ -292,7 +292,7 @@ static NSArray *sorted(NSArray *arr) {
 }
 
 - (void)test_whenDuplicateObjects_thatMovesAreUnique {
-    NSArray *o = @[@"cat", [NSObject new], @"dog", @"dog", [NSObject new], [NSObject new], @"cat", @65];
+    NSArray *o = @[@"cat", @(NSNotFound), @"dog", @"dog", @(NSNotFound), @(NSNotFound), @"cat", @65];
     NSArray *n = @[@"cat", o[1], @"dog", o[4], @"dog", o[5], @"cat", @"cat", @"fish", @65];
     IGListIndexSetResult *result = IGListDiff(o, n, IGListDiffEquality);
     XCTAssertEqual([[NSSet setWithArray:[[result moves] valueForKeyPath:@"from"]] count], [result.moves count]);
@@ -364,6 +364,68 @@ static NSArray *sorted(NSArray *arr) {
     XCTAssertNil([result newIndexPathForIdentifier:@7]);
     XCTAssertEqualObjects([result newIndexPathForIdentifier:@8], [NSIndexPath indexPathForItem:6 inSection:1]);
     XCTAssertEqualObjects([result newIndexPathForIdentifier:@9], [NSIndexPath indexPathForItem:1 inSection:1]);
+}
+
+- (void)test_whenDiffing_withBatchUpdateResult_thatIndexesMatch {
+    NSArray *o = @[
+                   genTestObject(@1, @1),
+                   genTestObject(@2, @1),
+                   genTestObject(@3, @1),
+                   genTestObject(@4, @1),
+                   genTestObject(@5, @1),
+                   genTestObject(@6, @1),
+                   ];
+    NSArray *n = @[
+                   // deleted
+                   genTestObject(@2, @2), // updated
+                   genTestObject(@5, @1), // moved
+                   genTestObject(@4, @1),
+                   genTestObject(@7, @1), // inserted
+                   genTestObject(@6, @2), // updated
+                   genTestObject(@3, @2), // moved+updated
+                   ];
+    IGListIndexSetResult *result = [IGListDiff(o, n, IGListDiffEquality) resultForBatchUpdates];
+    XCTAssertEqual(result.updates.count, 0);
+    NSArray *expectedMoves = @[ [[IGListMoveIndex alloc] initWithFrom:4 to:1] ];
+    XCTAssertEqualObjects(result.moves, expectedMoves);
+    NSMutableIndexSet *expectedDeletes = [NSMutableIndexSet indexSetWithIndex:0];
+    [expectedDeletes addIndex:1];
+    [expectedDeletes addIndex:2];
+    [expectedDeletes addIndex:5];
+    XCTAssertEqualObjects(result.deletes, expectedDeletes);
+    NSMutableIndexSet *expectedInserts = [NSMutableIndexSet indexSetWithIndex:0];
+    [expectedInserts addIndex:3];
+    [expectedInserts addIndex:4];
+    [expectedInserts addIndex:5];
+    XCTAssertEqualObjects(result.inserts, expectedInserts);
+}
+
+- (void)test_whenDiffing_withBatchUpdateResult_thatIndexPathsMatch {
+    NSArray *o = @[
+                   genTestObject(@1, @1),
+                   genTestObject(@2, @1),
+                   genTestObject(@3, @1),
+                   genTestObject(@4, @1),
+                   genTestObject(@5, @1),
+                   genTestObject(@6, @1),
+                   ];
+    NSArray *n = @[
+                   // deleted
+                   genTestObject(@2, @2), // updated
+                   genTestObject(@5, @1), // moved
+                   genTestObject(@4, @1),
+                   genTestObject(@7, @1), // inserted
+                   genTestObject(@6, @2), // updated
+                   genTestObject(@3, @2), // moved+updated
+                   ];
+    IGListIndexPathResult *result = [IGListDiffPaths(0, 1, o, n, IGListDiffEquality) resultForBatchUpdates];
+    XCTAssertEqual(result.updates.count, 0);
+    NSArray *expectedMoves = @[ [[IGListMoveIndexPath alloc] initWithFrom:genIndexPath(4, 0) to:genIndexPath(1, 1)] ];
+    XCTAssertEqualObjects(result.moves, expectedMoves);
+    NSArray *expectedDeletes = @[genIndexPath(0, 0), genIndexPath(1, 0), genIndexPath(2, 0), genIndexPath(5, 0)];
+    XCTAssertEqualObjects(sorted(result.deletes), expectedDeletes);
+    NSArray *expectedInserts = @[genIndexPath(0, 1), genIndexPath(3, 1), genIndexPath(4, 1), genIndexPath(5, 1)];
+    XCTAssertEqualObjects(sorted(result.inserts), expectedInserts);
 }
 
 @end
