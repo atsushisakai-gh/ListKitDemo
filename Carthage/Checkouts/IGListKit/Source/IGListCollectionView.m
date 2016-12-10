@@ -9,33 +9,17 @@
 
 #import "IGListCollectionView.h"
 
-@interface IGListCollectionView ()
-
-@property (nonatomic, assign, readonly) BOOL requiresManualWillDisplay;
-@property (nonatomic, strong) NSSet *ig_visibleIndexPaths;
-
-@end
-
 @implementation IGListCollectionView
-
-- (void)commonInit {
-    self.backgroundColor = [UIColor whiteColor];
-    self.alwaysBounceVertical = YES;
-
-    // iOS 6 and 7 do not support -collectionView:willDisplayCell:forItemAtIndexPath: so we do it ourselves
-    _requiresManualWillDisplay = [[[UIDevice currentDevice] systemVersion] floatValue] < 8.0;
-}
 
 - (instancetype)initWithFrame:(CGRect)frame collectionViewLayout:(UICollectionViewLayout *)layout {
     if (self = [super initWithFrame:frame collectionViewLayout:layout]) {
-        [self commonInit];
-    }
-    return self;
-}
-
-- (instancetype)initWithCoder:(NSCoder *)aDecoder {
-    if (self = [super initWithCoder:aDecoder]) {
-        [self commonInit];
+        
+        UIColor *backgroundAppearanceColor = (UIColor *) [[[self class] appearance] backgroundColor];
+        if (!backgroundAppearanceColor) {
+            self.backgroundColor = [UIColor whiteColor];
+        }
+        
+        self.alwaysBounceVertical = YES;
     }
     return self;
 }
@@ -49,17 +33,6 @@
     [UIView performWithoutAnimation:^{
         [super layoutSubviews];
     }];
-
-    if (self.requiresManualWillDisplay && [self.delegate respondsToSelector:@selector(collectionView:willDisplayCell:forItemAtIndexPath:)]) {
-        NSArray *indexPaths = [self indexPathsForVisibleItems];
-        for (NSIndexPath *path in indexPaths) {
-            if (![self.ig_visibleIndexPaths containsObject:path]) {
-                UICollectionViewCell *cell = [self cellForItemAtIndexPath:path];
-                [self.delegate collectionView:self willDisplayCell:cell forItemAtIndexPath:path];
-            }
-        }
-        self.ig_visibleIndexPaths = [NSSet setWithArray:indexPaths];
-    }
 }
 
 @end

@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'IGListKit'
-  s.version = '1.0.0'
+  s.version = '2.0.0'
   s.summary = 'A data-driven UICollectionView framework.'
   s.homepage = 'https://github.com/Instagram/IGListKit'
   s.documentation_url = 'https://instagram.github.io/IGListKit'
@@ -19,7 +19,9 @@ Pod::Spec.new do |s|
   s.private_header_files = 'Source/Internal/*.h'
 
   s.requires_arc = true
-  s.platform = :ios, '8.0'
+
+  s.ios.deployment_target = '8.0'
+  s.tvos.deployment_target = '9.0'
 
   s.frameworks = 'UIKit'
   s.library = 'c++'

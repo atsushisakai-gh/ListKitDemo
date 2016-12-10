@@ -14,7 +14,7 @@
     <a title="IGListAdapterUpdater Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">IGListKit Docs</a> (79% documented)</p>
+        <p><a href="../index.html">IGListKit Docs</a> (100% documented)</p>
         <p class="header-right"><a href="https://github.com/Instagram/IGListKit"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -29,10 +29,27 @@
       <nav class="sidebar">
         <ul class="nav-groups">
           <li class="nav-group-name">
+            <a href="../Guides.html">Guides</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../getting-started.html">Getting Started</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../iglistdiffable-and-equality.html">IGListDiffable and Equality</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../migration.html">Migration</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
             <a href="../Categories.html">Categories</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Categories.html#/c:objc(cy)NSObject@IGListDiffable">NSObject(IGListDiffable)</a>
+                <a href="../Categories.html#/c:objc(cy)NSNumber@IGListDiffable">NSNumber(IGListDiffable)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Categories.html#/c:objc(cy)NSString@IGListDiffable">NSString(IGListDiffable)</a>
               </li>
             </ul>
           </li>
@@ -49,7 +66,10 @@
                 <a href="../Classes/IGListBatchUpdateData.html">IGListBatchUpdateData</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/IGListCollectionView.html">IGListCollectionView</a>
+                <a href="../Classes.html#/c:objc(cs)IGListCollectionView">IGListCollectionView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/IGListGridCollectionViewLayout.html">IGListGridCollectionViewLayout</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Classes/IGListIndexPathResult.html">IGListIndexPathResult</a>
@@ -153,6 +173,12 @@
                 <a href="../Type Definitions.html#/c:IGListUpdatingDelegate.h@T@IGListReloadUpdateBlock">IGListReloadUpdateBlock</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Type Definitions.html#/c:IGListSingleSectionController.h@T@IGListSingleSectionCellConfigureBlock">IGListSingleSectionCellConfigureBlock</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Type Definitions.html#/c:IGListSingleSectionController.h@T@IGListSingleSectionCellSizeBlock">IGListSingleSectionCellSizeBlock</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Type Definitions.html#/c:IGListAdapter.h@T@IGListUpdaterCompletion">IGListUpdaterCompletion</a>
               </li>
               <li class="nav-group-task">
@@ -192,11 +218,16 @@
 
                 </div>
               </div>
-            <p>This is an out-of-box upater for IGListAdapters. It conforms to IGListUpdatingDelegate and does re-entrant, coalesced
-updating on a UICollectionView.</p>
+            <p>An <code>IGListAdapterUpdater</code> is a concrete type that conforms to <code><a href="../Protocols/IGListUpdatingDelegate.html">IGListUpdatingDelegate</a></code>.
+It is an out-of-box upater for <code><a href="../Classes/IGListAdapter.html">IGListAdapter</a></code> objects to use.</p>
 
-<p>It also uses IGDiffKit (a least-minimal diff) for calculating UI updates when IGListAdapter calls
--performUpdateWithCollectionView:fromObjects:toObjects:completion:.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    This updater performs re-entrant, coalesced updating for a list. It also uses a least-minimal diff 
+for calculating UI updates when <code><a href="../Classes/IGListAdapter.html">IGListAdapter</a></code> calls 
+<code>-performUpdateWithCollectionView:fromObjects:toObjects:completion:</code>.
+
+</div>
 
           </section>
           <section class="section task-group-section">
@@ -215,7 +246,7 @@ updating on a UICollectionView.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>A delegate that receives events with data on the performance of a transition.</p>
+                        <p>The delegate that receives events with data on the performance of a transition.</p>
 
                       </div>
                       <div class="declaration">
@@ -243,7 +274,7 @@ updating on a UICollectionView.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>A flag indicating if a move should be treated as a delete+insert.</p>
+                        <p>A flag indicating if a move should be treated as a <q>delete, then insert</q> operation.</p>
 
                       </div>
                       <div class="declaration">
@@ -289,8 +320,8 @@ updating on a UICollectionView.</p>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2016 <a class="link" href="https://twitter.com/fbOpenSource" target="_blank" rel="external">Instagram</a>. All rights reserved. (Last updated: 2016-09-30)</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.7.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>&copy; 2016 <a class="link" href="https://twitter.com/fbOpenSource" target="_blank" rel="external">Instagram</a>. All rights reserved. (Last updated: 2016-12-09)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.7.3</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>

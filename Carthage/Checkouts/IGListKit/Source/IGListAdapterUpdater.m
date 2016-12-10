@@ -208,17 +208,6 @@ static NSArray *objectsWithDuplicateIdentifiersRemoved(NSArray<id<IGListDiffable
 
     @try {
         [delegate listAdapterUpdater:self willPerformBatchUpdatesWithCollectionView:collectionView];
-
-        if (IGListExperimentEnabled(self.experiments, IGListExperimentLayoutBeforeUpdate)) {
-            /**
-             There are traces where UICollectionView throws "Invalid update: invalid number of items in section i..." where
-             logs show that the problem section has a different "before" item count than the assert claims. Our hunch is
-             that there is some state corruption from too many unanimated updates happening rapidly and layout state
-             becoming out of sync.
-             */
-            [collectionView layoutIfNeeded];
-        }
-
         if (animated) {
             [collectionView performBatchUpdates:updateBlock completion:completionBlock];
         } else {
@@ -230,17 +219,6 @@ static NSArray *objectsWithDuplicateIdentifiersRemoved(NSArray<id<IGListDiffable
         [delegate listAdapterUpdater:self willCrashWithException:exception fromObjects:fromObjects toObjects:toObjects updates:updateData];
         @throw exception;
     }
-}
-
-- (NSSet *)filterIndexPaths:(NSSet<NSIndexPath *> *)indexPaths removingSections:(NSIndexSet *)sections {
-    NSMutableSet *filteredIndexPaths = [indexPaths mutableCopy];
-    for (NSIndexPath *indexPath in indexPaths) {
-        const NSUInteger section = indexPath.section;
-        if ([sections containsIndex:section]) {
-            [filteredIndexPaths removeObject:indexPath];
-        }
-    }
-    return filteredIndexPaths;
 }
 
 void convertReloadToDeleteInsert(NSMutableIndexSet *reloads,
@@ -256,8 +234,16 @@ void convertReloadToDeleteInsert(NSMutableIndexSet *reloads,
         const NSUInteger from = hasObjects ? [result oldIndexForIdentifier:diffIdentifier] : idx;
         const NSUInteger to = hasObjects ? [result newIndexForIdentifier:diffIdentifier] : idx;
         [reloads removeIndex:from];
-        [deletes addIndex:from];
-        [inserts addIndex:to];
+
+        // if a reload is queued outside the diff and the object was inserted or deleted it cannot be
+        if (from != NSNotFound && to != NSNotFound) {
+            [deletes addIndex:from];
+            [inserts addIndex:to];
+        } else {
+            IGAssert([result.deletes containsIndex:idx],
+                     @"Reloaded section %zi was not found in deletes with from: %zi, to: %zi, deletes: %@",
+                     idx, from, to, deletes);
+        }
     }];
 }
 
@@ -309,16 +295,6 @@ void convertReloadToDeleteInsert(NSMutableIndexSet *reloads,
 
 - (void)endPerformBatchUpdates {
     self.batchUpdateOrReloadInProgress = NO;
-}
-
-- (NSArray *)trimmedIndexPaths:(NSArray <NSIndexPath *> *)indexPaths inSections:(NSIndexSet *)sections {
-    NSMutableArray *paths = [indexPaths mutableCopy];
-    for (NSInteger i = 0; i < paths.count; i++) {
-        if ([sections containsIndex:[paths[i] section]]) {
-            [paths removeObjectAtIndex:i];
-        }
-    }
-    return paths;
 }
 
 - (void)cleanupState {

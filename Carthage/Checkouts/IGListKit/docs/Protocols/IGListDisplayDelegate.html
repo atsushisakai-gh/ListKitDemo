@@ -14,7 +14,7 @@
     <a title="IGListDisplayDelegate Protocol Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">IGListKit Docs</a> (79% documented)</p>
+        <p><a href="../index.html">IGListKit Docs</a> (100% documented)</p>
         <p class="header-right"><a href="https://github.com/Instagram/IGListKit"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -29,10 +29,27 @@
       <nav class="sidebar">
         <ul class="nav-groups">
           <li class="nav-group-name">
+            <a href="../Guides.html">Guides</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../getting-started.html">Getting Started</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../iglistdiffable-and-equality.html">IGListDiffable and Equality</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../migration.html">Migration</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
             <a href="../Categories.html">Categories</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Categories.html#/c:objc(cy)NSObject@IGListDiffable">NSObject(IGListDiffable)</a>
+                <a href="../Categories.html#/c:objc(cy)NSNumber@IGListDiffable">NSNumber(IGListDiffable)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Categories.html#/c:objc(cy)NSString@IGListDiffable">NSString(IGListDiffable)</a>
               </li>
             </ul>
           </li>
@@ -49,7 +66,10 @@
                 <a href="../Classes/IGListBatchUpdateData.html">IGListBatchUpdateData</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/IGListCollectionView.html">IGListCollectionView</a>
+                <a href="../Classes.html#/c:objc(cs)IGListCollectionView">IGListCollectionView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/IGListGridCollectionViewLayout.html">IGListGridCollectionViewLayout</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Classes/IGListIndexPathResult.html">IGListIndexPathResult</a>
@@ -153,6 +173,12 @@
                 <a href="../Type Definitions.html#/c:IGListUpdatingDelegate.h@T@IGListReloadUpdateBlock">IGListReloadUpdateBlock</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Type Definitions.html#/c:IGListSingleSectionController.h@T@IGListSingleSectionCellConfigureBlock">IGListSingleSectionCellConfigureBlock</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Type Definitions.html#/c:IGListSingleSectionController.h@T@IGListSingleSectionCellSizeBlock">IGListSingleSectionCellSizeBlock</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Type Definitions.html#/c:IGListAdapter.h@T@IGListUpdaterCompletion">IGListUpdaterCompletion</a>
               </li>
               <li class="nav-group-task">
@@ -211,7 +237,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Tells the delegate that the specified list is about to be displayed.</p>
+                        <p>Tells the delegate that the specified section controller is about to be displayed.</p>
 
                       </div>
                       <div class="declaration">
@@ -236,7 +262,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>The list adapter that the list will display in.</p>
+                                  <p>The list adapter for the section controller.</p>
 
                                 </div>
                               </td>
@@ -249,7 +275,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>The list about to be displayed.</p>
+                                  <p>The section controller about to be displayed.</p>
 
                                 </div>
                               </td>
@@ -273,7 +299,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Tells the delegate that the specified list is no longer being displayed.</p>
+                        <p>Tells the delegate that the specified section controller is no longer being displayed.</p>
 
                       </div>
                       <div class="declaration">
@@ -298,7 +324,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>The list adapter that the list was displayed in.</p>
+                                  <p>The list adapter for the section controller.</p>
 
                                 </div>
                               </td>
@@ -311,7 +337,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>The list that is no longer displayed.</p>
+                                  <p>The section controller that is no longer displayed.</p>
 
                                 </div>
                               </td>
@@ -335,7 +361,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Tells the delegate that a row in the specified list is about to be displayed.</p>
+                        <p>Tells the delegate that a cell in the specified list is about to be displayed.</p>
 
                       </div>
                       <div class="declaration">
@@ -362,7 +388,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>The list adapter that row will display in.</p>
+                                  <p>The list adapter in which the cell will display.</p>
 
                                 </div>
                               </td>
@@ -375,7 +401,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>The section controller that is displaying.</p>
+                                  <p>The section controller that is displaying the cell.</p>
 
                                 </div>
                               </td>
@@ -401,7 +427,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>The index of the row.</p>
+                                  <p>The index of the cell in the section.</p>
 
                                 </div>
                               </td>
@@ -425,7 +451,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Tells the delegate that a row in the specified list is no longer being displayed.</p>
+                        <p>Tells the delegate that a cell in the specified list is no longer being displayed.</p>
 
                       </div>
                       <div class="declaration">
@@ -452,7 +478,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>The list adapter that the list was displayed in.</p>
+                                  <p>The list adapter in which the cell was displayed.</p>
 
                                 </div>
                               </td>
@@ -491,7 +517,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>The index of the row.</p>
+                                  <p>The index of the cell in the section.</p>
 
                                 </div>
                               </td>
@@ -507,8 +533,8 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2016 <a class="link" href="https://twitter.com/fbOpenSource" target="_blank" rel="external">Instagram</a>. All rights reserved. (Last updated: 2016-09-30)</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.7.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>&copy; 2016 <a class="link" href="https://twitter.com/fbOpenSource" target="_blank" rel="external">Instagram</a>. All rights reserved. (Last updated: 2016-12-09)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.7.3</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>
