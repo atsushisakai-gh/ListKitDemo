@@ -10,12 +10,12 @@ import UIKit
 import IGListKit
 
 class Feed {
-    let id: Int
+    let id: String
     let user: User
     let comment: String
     let image: UIImage
     
-    init(id: Int, user: User, comment: String, image: UIImage) {
+    init(id: String, user: User, comment: String, image: UIImage) {
         self.id = id
         self.user = user
         self.comment = comment
