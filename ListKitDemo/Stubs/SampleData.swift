@@ -12,6 +12,7 @@ class SampleData {
 
     class func createInitialDataSet() -> [Any] {
         return [
+            RecommendFeed(),
             UserHistory(users: allUsers()),
             Feed(id: UUID().uuidString, user: allUsers()[0], comment: "はい…", image: UIImage(named: "IMG_005.jpg")!),
             Feed(id: UUID().uuidString, user: allUsers()[4], comment: "おっさんそば食えや", image: UIImage(named: "IMG_005.jpg")!),
