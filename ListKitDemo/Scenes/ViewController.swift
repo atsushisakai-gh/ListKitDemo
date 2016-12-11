@@ -46,6 +46,8 @@ extension ViewController: IGListAdapterDataSource {
     func listAdapter(_ listAdapter: IGListAdapter, sectionControllerFor object: Any) -> IGListSectionController {
         if object is UserHistory {
             return UserHistorySectionController()
+        } else if object is RecommendFeed {
+            return RecommendFeedSectionController()
         } else {
             return FeedSectionController()
         }
